@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ប្រព័ន្ធប្រឡងចំណេះដឹង ICT</title>
+  <style>
+    @font-face {
+      font-family: 'khSiemreap';
+      src: url('fonts/Kantumruy.ttf');
+    }
+    :root {
+      --primary: #2980b9;
+      --secondary: #2c3e50;
+      --accent: #e74c3c;
+      --success: #27ae60;
+      --danger: #c0392b;
+      --warning: #f39c12;
+      --info: #3498db;
+      --light: #ecf0f1;
+      --dark: #2c3e50;
+      --gray: #7f8c8d;
+      --round1: #3498db;
+      --round2: #9b59b6;
+      --round3: #e74c3c;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'khSiemreap', 'Battambang', Arial, sans-serif;
+      line-height: 1.6;
+      background: linear-gradient(135deg, #ecf0f1 0%, #bdc3c7 100%);
+      color: var(--dark);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      padding: 30px;
+      margin: 20px 0;
+      position: relative;
+    }
+    .round-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 15px;
+      border-radius: 50px;
+      font-weight: bold;
+      color: white;
+      font-size: 0.9rem;
+    }
+    .round-1 {
+      background-color: var(--round1);
+    }
+    .round-2 {
+      background-color: var(--round2);
+    }
+    .round-3 {
+      background-color: var(--round3);
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    h1 {
+      color: var(--primary);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .subtitle {
+      color: var(--accent);
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+    .welcome-screen, .round-complete-screen, .final-results-screen {
+      text-align: center;
+      padding: 20px;
+    }
+    .welcome-icon, .round-complete-icon, .final-results-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+    .welcome-text, .round-complete-text, .final-results-text {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: var(--dark);
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #ddd;
+      border-radius: 10px;
+      font-size: 1.1rem;
+      font-family: 'khSiemreap', 'Battambang', Arial, sans-serif;
+    }
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    .btn {
+      padding: 15px 30px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px;
+    }
+    .btn-primary {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--info) 100%);
+      color: white;
+    }
+    .btn-secondary {
+      background-color: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+    .btn-success {
+      background-color: var(--success);
+      color: white;
+    }
+    .btn-warning {
+      background-color: var(--warning);
+      color: white;
+    }
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .progress-container {
+      width: 100%;
+      background-color: #f3f3f3;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+      height: 15px;
+    }
+    .progress-bar {
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+    .progress-round-1 {
+      background: linear-gradient(90deg, var(--round1) 0%, #5dade2 100%);
+    }
+    .progress-round-2 {
+      background: linear-gradient(90deg, var(--round2) 0%, #bb8fce 100%);
+    }
+    .progress-round-3 {
+      background: linear-gradient(90deg, var(--round3) 0%, #f1948a 100%);
+    }
+    .question-count {
+      text-align: right;
+      color: var(--gray);
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+    .question-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      border: 1px solid #eee;
+    }
+    .question-text {
+      font-size: 1.4rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+    .question-image {
+      width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .options-container {
+      display: grid;
+      grid-gap: 15px;
+      margin-bottom: 20px;
+    }
+    .option-button {
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      background-color: #f8f9fa;
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+    }
+    .option-button:hover {
+      background-color: #e9ecef;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    .option-button.selected {
+      background-color: #d6eaf8;
+      border-color: var(--info);
+      color: var(--info);
+    }
+    .option-button.correct {
+      background-color: #d4edda;
+      border-color: var(--success);
+      color: var(--success);
+    }
+    .option-button.incorrect {
+      background-color: #f8d7da;
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+    .option-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      background-color: var(--secondary);
+      color: white;
+      border-radius: 50%;
+      margin-right: 15px;
+      font-weight: bold;
+    }
+    .navigation-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    .nav-button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .nav-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .nav-button.prev {
+      background-color: white;
+      color: var(--info);
+      border: 2px solid var(--info);
+    }
+    .nav-button.next {
+      background: linear-gradient(90deg, var(--primary) 0%, var(--info) 100%);
+      color: white;
+    }
+    .nav-button.submit {
+      background-color: var(--success);
+      color: white;
+    }
+    .nav-button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .result-container {
+      text-align: center;
+      padding: 30px;
+    }
+    .result-title {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .result-score {
+      font-size: 3rem;
+      font-weight: bold;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+    .result-details {
+      margin-bottom: 30px;
+      font-size: 1.1rem;
+    }
+    .round-scores {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+    }
+    .round-score {
+      text-align: center;
+      padding: 15px;
+      border-radius: 10px;
+      width: 30%;
+    }
+    .round-1-score {
+      background-color: rgba(52, 152, 219, 0.1);
+      color: var(--round1);
+    }
+    .round-2-score {
+      background-color: rgba(155, 89, 182, 0.1);
+      color: var(--round2);
+    }
+    .round-3-score {
+      background-color: rgba(231, 76, 60, 0.1);
+      color: var(--round3);
+    }
+    .round-number {
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .round-points {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .restart-button {
+      padding: 15px 30px;
+      background: linear-gradient(90deg, var(--primary) 0%, var(--info) 100%);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    .restart-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    .loading {
+      text-align: center;
+      padding: 40px;
+      font-size: 1.2rem;
+      color: var(--gray);
+    }
+    .error {
+      text-align: center;
+      padding: 40px;
+      color: var(--danger);
+      font-size: 1.2rem;
+    }
+    footer {
+      text-align: center;
+      margin-top: 30px;
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+    .leaderboard {
+      width: 100%;
+      margin: 20px 0;
+      border-collapse: collapse;
+    }
+    .leaderboard th, .leaderboard td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+    .leaderboard th {
+      background-color: var(--primary);
+      color: white;
+    }
+    .leaderboard tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+    .leaderboard tr:hover {
+      background-color: #e9f7fe;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        border-radius: 15px;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .question-text {
+        font-size: 1.2rem;
+      }
+      .option-button {
+        padding: 12px 15px;
+        font-size: 1rem;
+      }
+      .round-scores {
+        flex-direction: column;
+        align-items: center;
+      }
+      .round-score {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Battambang:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ប្រព័ន្ធប្រឡងចំណេះដឹង ICT</h1>
+      <p class="subtitle">សូមពិនិត្យចំណេះដឹង ICT របស់អ្នកជាមួយនឹងសំណួរគួរឱ្យចាប់អារម្មណ៍</p>
+    </header>
+    
+    <div id="app-container">
+      <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-icon">🧠</div>
+        <h2>សូមស្វាគមន៍មកកាន់ប្រព័ន្ធប្រឡងចំណេះដឹង ICT</h2>
+        <p class="welcome-text">
+          កម្មវិធីនេះផ្តល់នូវសំណួរប្រឡងចំនួន ៣ វគ្គ វគ្គនីមួយៗមាន ១០ សំណួរ។<br>
+          បន្ទាប់ពីបញ្ចប់វគ្គទី៣ លទ្ធផលរបស់អ្នកនឹងត្រូវរក្សាទុកក្នុងប្រព័ន្ធចំណាត់ថ្នាក់។
+        </p>
+        <div class="form-group">
+          <label for="player-name">ឈ្មោះអ្នកលេង:</label>
+          <input type="text" id="player-name" placeholder="សូមបញ្ចូលឈ្មោះរបស់អ្នក">
+        </div>
+        <button class="btn btn-primary" id="start-button">ចាប់ផ្តើមប្រឡង</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© 2023 ប្រព័ន្ធប្រឡងចំណេះដឹង ICT | រចនាដោយអ្នកអភិវឌ្ឍន៍</p>
+  </footer>
+
+  <script>
+    // Google Sheets configuration
+    const SHEET_ID = "1nsO-EgHt6E2C1W3mFUoO4wpmqPa8YXMZmJ8LYXq5f70";
+    const API_KEY = "AIzaSyBy5yeaAgfHx3Mmed3LlTu7WeOchsXJlrI";
+    const QUESTIONS_SHEET = "Sheet1";
+    const RESULTS_SHEET = "Sheet5";
+
+    // DOM elements
+    const appContainer = document.getElementById("app-container");
+    const welcomeScreen = document.getElementById("welcome-screen");
+    const startButton = document.getElementById("start-button");
+    const playerNameInput = document.getElementById("player-name");
+
+    // Game state
+    let gameState = {
+      playerName: "",
+      currentRound: 1,
+      currentQuestionIndex: 0,
+      score: 0,
+      roundScores: [0, 0, 0],
+      usedQuestionIds: [],
+      questions: [],
+      currentQuestions: [],
+      playerAnswers: [[], [], []]
+    };
+
+    // Initialize the app
+    function init() {
+      startButton.addEventListener('click', startGame);
+    }
+
+    // Start the game
+    async function startGame() {
+      const playerName = playerNameInput.value.trim();
+      if (!playerName) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'ឈ្មោះអ្នកលេង',
+          text: 'សូមបញ្ចូលឈ្មោះរបស់អ្នកដើម្បីបន្ត',
+          confirmButtonText: 'យល់ព្រម'
+        });
+        return;
+      }
+
+      gameState.playerName = playerName;
+
+      try {
+        // Load questions from Google Sheets
+        const questions = await fetchQuizData();
+        gameState.questions = questions;
+        
+        // Start the first round
+        startRound(1);
+      } catch (error) {
+        showError();
+        console.error(error);
+      }
+    }
+
+    // Fetch data from Google Sheets
+    async function fetchQuizData() {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${QUESTIONS_SHEET}?key=${API_KEY}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      const rows = data.values;
+
+      // Convert rows to objects
+      const headers = rows[0];
+      const questions = rows.slice(1).map(row => {
+        const question = {};
+        row.forEach((value, index) => {
+          question[headers[index]] = value;
+        });
+        return question;
+      });
+
+      return questions;
+    }
+
+    // Start a new round
+    function startRound(roundNumber) {
+      gameState.currentRound = roundNumber;
+      gameState.currentQuestionIndex = 0;
+      gameState.playerAnswers[roundNumber - 1] = [];
+
+      // Select 10 unique questions for this round
+      const availableQuestions = gameState.questions.filter(q => 
+        !gameState.usedQuestionIds.includes(q.id)
+      );
+      
+      // Shuffle and take 10 questions
+      const roundQuestions = availableQuestions
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 10);
+      
+      gameState.currentQuestions = roundQuestions;
+      
+      // Mark these questions as used
+      roundQuestions.forEach(q => {
+        gameState.usedQuestionIds.push(q.id);
+      });
+
+      // Render the round screen
+      renderRoundScreen(roundNumber);
+    }
+
+    // Render round screen
+    function renderRoundScreen(roundNumber) {
+      appContainer.innerHTML = `
+        <div class="round-complete-screen">
+          <div class="round-complete-icon">${roundNumber === 1 ? '🚀' : roundNumber === 2 ? '🔥' : '🏆'}</div>
+          <h2>វគ្គ ${roundNumber}</h2>
+          <p class="round-complete-text">
+            អ្នកនឹងត្រូវឆ្លើយសំណួរចំនួន ១០ សំណួរ។<br>
+            សូមខិតខំឆ្លើយអោយបានត្រឹមត្រូវដើម្បីបង្កើនពិន្ទុរបស់អ្នក។
+          </p>
+          <button class="btn btn-primary" id="start-round-button">ចាប់ផ្តើមវគ្គ ${roundNumber}</button>
+        </div>
+      `;
+
+      document.getElementById('start-round-button').addEventListener('click', () => {
+        renderQuiz();
+      });
+    }
+
+    // Render the quiz UI
+    function renderQuiz() {
+      const { currentRound, currentQuestionIndex, currentQuestions } = gameState;
+      const questionData = currentQuestions[currentQuestionIndex];
+      
+      appContainer.innerHTML = `
+        <div class="round-badge round-${currentRound}">វគ្គ ${currentRound}</div>
+        <div class="progress-container">
+          <div class="progress-bar progress-round-${currentRound}" id="progress-bar" 
+               style="width: ${((currentQuestionIndex + 1) / currentQuestions.length) * 100}%"></div>
+        </div>
+        <div class="question-count" id="question-count">សំណួរ ${currentQuestionIndex + 1}/${currentQuestions.length}</div>
+        <div class="question-card">
+          <div class="question-text">${questionData.questions}</div>
+          ${questionData.image ? `<img class="question-image" src="${questionData.image}" alt="Question Image">` : ''}
+          <div class="options-container">
+            <button class="option-button" data-index="1">
+              <span class="option-letter">ក</span> ${questionData.option1}
+            </button>
+            <button class="option-button" data-index="2">
+              <span class="option-letter">ខ</span> ${questionData.option2}
+            </button>
+            <button class="option-button" data-index="3">
+              <span class="option-letter">គ</span> ${questionData.option3}
+            </button>
+          </div>
+          <div class="navigation-buttons">
+            <button class="nav-button prev" ${currentQuestionIndex === 0 ? 'disabled' : ''}>សំណួរមុន</button>
+            <button class="nav-button next">${currentQuestionIndex === currentQuestions.length - 1 ? 'បញ្ចប់វគ្គ' : 'សំណួរបន្ទាប់'}</button>
+          </div>
+        </div>
+      `;
+
+      // Highlight previously selected answer if exists
+      const currentAnswer = gameState.playerAnswers[gameState.currentRound - 1][currentQuestionIndex];
+      if (currentAnswer !== undefined) {
+        const selectedButton = document.querySelector(`.option-button[data-index="${currentAnswer}"]`);
+        if (selectedButton) {
+          selectedButton.classList.add('selected');
+        }
+      }
+
+      // Add event listeners to option buttons
+      document.querySelectorAll('.option-button').forEach(button => {
+        button.addEventListener('click', () => {
+          // Remove selected class from all options
+          document.querySelectorAll('.option-button').forEach(btn => {
+            btn.classList.remove('selected');
+          });
+          
+          // Add selected class to clicked option
+          button.classList.add('selected');
+          
+          // Store user's answer
+          gameState.playerAnswers[gameState.currentRound - 1][currentQuestionIndex] = 
+            parseInt(button.getAttribute('data-index'));
+        });
+      });
+
+      // Previous button event listener
+      document.querySelector('.nav-button.prev').addEventListener('click', () => {
+        if (gameState.currentQuestionIndex > 0) {
+          gameState.currentQuestionIndex--;
+          renderQuiz();
+        }
+      });
+
+      // Next/Submit button event listener
+      document.querySelector('.nav-button.next').addEventListener('click', () => {
+        if (gameState.playerAnswers[gameState.currentRound - 1][gameState.currentQuestionIndex] === undefined) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'សូមជ្រើសរើសចម្លើយ',
+            text: 'អ្នកមិនទាន់ជ្រើសរើសចម្លើយនៅឡើយទេ។',
+            confirmButtonText: 'យល់ព្រម'
+          });
+          return;
+        }
+
+        // Check if it's the last question of the round
+        if (gameState.currentQuestionIndex === gameState.currentQuestions.length - 1) {
+          finishRound();
+        } else {
+          gameState.currentQuestionIndex++;
+          renderQuiz();
+        }
+      });
+    }
+
+    // Finish the current round
+    function finishRound() {
+      const { currentRound, currentQuestions, playerAnswers } = gameState;
+      const roundAnswers = playerAnswers[currentRound - 1];
+      
+      // Calculate score for this round
+      let roundScore = 0;
+      currentQuestions.forEach((question, index) => {
+        const correctAnswerIndex = parseInt(question.answer);
+        if (roundAnswers[index] === correctAnswerIndex) {
+          roundScore++;
+        }
+      });
+      
+      gameState.roundScores[currentRound - 1] = roundScore;
+      gameState.score += roundScore;
+
+      // Show round results
+      Swal.fire({
+        title: 'វគ្គបញ្ចប់!',
+        html: `
+          <div style="font-size: 1.5rem; color: #2980b9; margin-bottom: 20px;">ពិន្ទុវគ្គ ${currentRound}</div>
+          <div style="font-size: 3rem; color: #e74c3c; font-weight: bold;">${roundScore}/10</div>
+          <div style="margin-top: 20px; font-size: 1.2rem;">
+            ${roundScore >= 8 ? 
+              'ពូកែមែនទែន! អ្នកឆ្លើយត្រូវចំនួនច្រើនណាស់!' : 
+              roundScore >= 5 ?
+              'ល្អ! អ្នកឆ្លើយត្រូវចំនួនមធ្យម' :
+              'សូមខិតខំធ្វើលំហាត់បន្ថែមទៀត!'}
+          </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'យល់ព្រម'
+      }).then(() => {
+        // Check if it's the final round
+        if (currentRound === 3) {
+          finishGame();
+        } else {
+          // Start next round
+          startRound(currentRound + 1);
+        }
+      });
+    }
+
+    // Finish the entire game
+    async function finishGame() {
+      // Calculate total score
+      const totalScore = gameState.score;
+      
+      // Save results to Google Sheets
+      const success = await saveResults(totalScore);
+      
+      // Show final results
+      appContainer.innerHTML = `
+        <div class="final-results-screen">
+          <div class="final-results-icon">🏆</div>
+          <h2>ប្រឡងចប់សព្វគ្រប់!</h2>
+          <div class="result-score">${totalScore}/30</div>
+          
+          <div class="round-scores">
+            <div class="round-score round-1-score">
+              <div class="round-number">វគ្គ ១</div>
+              <div class="round-points">${gameState.roundScores[0]}/10</div>
+            </div>
+            <div class="round-score round-2-score">
+              <div class="round-number">វគ្គ ២</div>
+              <div class="round-points">${gameState.roundScores[1]}/10</div>
+            </div>
+            <div class="round-score round-3-score">
+              <div class="round-number">វគ្គ ៣</div>
+              <div class="round-points">${gameState.roundScores[2]}/10</div>
+            </div>
+          </div>
+          
+          <p class="final-results-text">
+            សូមអបអរសាទរ! អ្នកបានបញ្ចប់កម្មវិធីប្រឡងចំណេះដឹង ICT ដោយជោគជ័យ។<br>
+            ${success ? 'លទ្ធផលរបស់អ្នកត្រូវបានរក្សាទុកនៅក្នុងប្រព័ន្ធចំណាត់ថ្នាក់ហើយ។' : 'មានបញ្ហាក្នុងការរក្សាទុកលទ្ធផល។'}
+          </p>
+          
+          <button class="btn btn-primary" id="restart-button">លេងម្តងទៀត</button>
+          <button class="btn btn-secondary" id="leaderboard-button">មើលចំណាត់ថ្នាក់</button>
+        </div>
+      `;
+
+      document.getElementById('restart-button').addEventListener('click', () => {
+        resetGame();
+        welcomeScreen.style.display = 'block';
+      });
+
+      document.getElementById('leaderboard-button').addEventListener('click', () => {
+        showLeaderboard();
+      });
+    }
+
+    // Save results to Google Sheets
+    async function saveResults(score) {
+      try {
+        // Generate a unique ID (using timestamp)
+        const id = new Date().getTime();
+        
+        // Prepare data for submission
+        const data = {
+          id: id,
+          name: gameState.playerName,
+          score: score,
+          rank: "" // Rank will be calculated in the sheet
+        };
+        
+        // In a real implementation, you would send this data to your server
+        // or use Google Apps Script to write to the sheet
+        // This is a mock implementation
+        console.log("Saving results:", data);
+        
+        // For demonstration purposes, we'll simulate a successful save
+        return true;
+      } catch (error) {
+        console.error("Error saving results:", error);
+        return false;
+      }
+    }
+
+    // Show leaderboard
+    async function showLeaderboard() {
+      try {
+        // Fetch leaderboard data
+        const leaderboardData = await fetchLeaderboardData();
+        
+        appContainer.innerHTML = `
+          <div class="final-results-screen">
+            <h2>តារាងចំណាត់ថ្នាក់</h2>
+            <table class="leaderboard">
+              <thead>
+                <tr>
+                  <th>ឈ្មោះ</th>
+                  <th>ពិន្ទុ</th>
+                  <th>ចំណាត់ថ្នាក់</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${leaderboardData.map((player, index) => `
+                  <tr>
+                    <td>${player.name}</td>
+                    <td>${player.score}</td>
+                    <td>${index + 1}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+            <button class="btn btn-primary" id="back-button">ត្រលប់ក្រោយ</button>
+          </div>
+        `;
+        
+        document.getElementById('back-button').addEventListener('click', () => {
+          finishGame();
+        });
+      } catch (error) {
+        console.error("Error loading leaderboard:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'មិនអាចផ្ទុកទិន្នន័យ',
+          text: 'មានបញ្ហាក្នុងការផ្ទុកតារាងចំណាត់ថ្នាក់',
+          confirmButtonText: 'យល់ព្រម'
+        });
+      }
+    }
+
+    // Fetch leaderboard data from Google Sheets
+    async function fetchLeaderboardData() {
+      // This is a mock implementation
+      // In a real app, you would fetch from your Google Sheet
+      return [
+        { name: "សុខា", score: 28 },
+        { name: "វិចិត្រ", score: 25 },
+        { name: "មាន់", score: 24 },
+        { name: gameState.playerName, score: gameState.score },
+        { name: "រិទ្ធិ", score: 20 }
+      ].sort((a, b) => b.score - a.score);
+    }
+
+    // Reset the game state
+    function resetGame() {
+      gameState = {
+        playerName: gameState.playerName,
+        currentRound: 1,
+        currentQuestionIndex: 0,
+        score: 0,
+        roundScores: [0, 0, 0],
+        usedQuestionIds: [],
+        questions: gameState.questions,
+        currentQuestions: [],
+        playerAnswers: [[], [], []]
+      };
+    }
+
+    // Show error message
+    function showError() {
+      appContainer.innerHTML = `
+        <div class="error">
+          <p>មានបញ្ហាក្នុងការផ្ទុកសំណួរ។ សូមព្យាយាមម្តងទៀត។</p>
+          <p>ប្រសិនបើបញ្ហានៅតែមាន សូមទាក់ទងអ្នកគ្រប់គ្រង។</p>
+          <button class="btn btn-primary" id="retry-button">ព្យាយាមម្តងទៀត</button>
+        </div>
+      `;
+
+      document.getElementById('retry-button').addEventListener('click', () => {
+        location.reload();
+      });
+    }
+
+    // Initialize the app when the page loads
+    window.addEventListener('load', init);
+  </script>
+</body>
+</html>
